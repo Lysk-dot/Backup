@@ -1,0 +1,39 @@
+name: PowerShell CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell module cache
+        uses: actions/cache@v4
+        with:
+          path: C:\Users\runneradmin\Documents\WindowsPowerShell\Modules
+          key: psmodules-${{ runner.os }}-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            psmodules-${{ runner.os }}-
+
+      - name: Install tooling modules
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -AllowClobber
+          Install-Module Pester -Scope CurrentUser -Force -AllowClobber
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $settings = '.\.config\PSScriptAnalyzerSettings.psd1'
+          if (Test-Path $settings) { Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Settings $settings -EnableExit } else { Invoke-ScriptAnalyzer -Path ./scripts -Recurse -EnableExit }
+
+      - name: Run Pester tests
+        shell: pwsh
+        run: |
+          Invoke-Pester -Configuration @{ Run = @{ Path = 'tests'; Exit = $true } }

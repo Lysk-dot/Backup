@@ -130,7 +130,17 @@ function Invoke-Backup {
         Write-ApiLog "Starting backup for $RepoName" "INFO"
         
         Compress-Archive -Path "$($repo.source)\*" -DestinationPath $backupFilePath -CompressionLevel Optimal -Force
-        
+            # Usar nível de compressão configurado
+            $compressionLevel = 'Optimal'
+            if ($config.settings.compression) {
+                switch ($config.settings.compression.ToString()) {
+                    'Optimal' { $compressionLevel = 'Optimal' }
+                    'Fastest' { $compressionLevel = 'Fastest' }
+                    'NoCompression' { $compressionLevel = 'NoCompression' }
+                    default { $compressionLevel = 'Optimal' }
+                }
+            }
+            Compress-Archive -Path "$($repo.source)\*" -DestinationPath $backupFilePath -CompressionLevel $compressionLevel -Force
         $fileSize = (Get-Item $backupFilePath).Length
         $fileSizeMB = [math]::Round($fileSize / 1MB, 2)
         
@@ -301,7 +311,7 @@ try {
                 } else {
                     # Executa uma checagem rápida on-demand se não existir
                     try {
-                        & "$scriptPath\..\scripts\health-check.ps1" -Quiet | Out-Null
+                        & "$scriptPath\health-check.ps1" -Quiet | Out-Null
                     } catch {}
                     if (Test-Path $statusJson) {
                         $responseData = Get-Content $statusJson -Raw

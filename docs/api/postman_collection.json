@@ -1,0 +1,157 @@
+{
+  "info": {
+    "name": "Backup API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/status",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "status"]
+        }
+      }
+    },
+    {
+      "name": "Listar Repositórios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/repositories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "repositories"]
+        }
+      }
+    },
+    {
+      "name": "Adicionar Repositório",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"repoX\",\n  \"source\": \\\"\\\\\\\\server\\\\share\\\\repoX\\\\\",\n  \"description\": \"Demo\",\n  \"enabled\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/repositories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "repositories"]
+        }
+      }
+    },
+    {
+      "name": "Validar Todos Repos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/repositories/validate",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "repositories", "validate"]
+        }
+      }
+    },
+    {
+      "name": "Validar Repo por Nome",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/repositories/validate/{{repo}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "repositories", "validate", "{{repo}}"]
+        }
+      }
+    },
+    {
+      "name": "Status de Saúde do Disco",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Listar Todos Backups",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/backups",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "backups"]
+        }
+      }
+    },
+    {
+      "name": "Listar Backups de um Repo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/backups/{{repo}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "backups", "{{repo}}"]
+        }
+      }
+    },
+    {
+      "name": "Criar Backup de um Repo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/backup/{{repo}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "backup", "{{repo}}"]
+        }
+      }
+    },
+    {
+      "name": "Backup de Todos",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/backup/all",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "backup", "all"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "repo", "value": "repo1" }
+  ]
+}

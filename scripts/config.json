@@ -1,4 +1,5 @@
 {
+  "$schema": "../docs/usage/config.schema.json",
   "repositories": [
     {
       "name": "repo1",
@@ -20,7 +21,7 @@
     }
   ],
   "settings": {
-    "compression": "zip",
+    "compression": "Optimal",
     "keepBackups": 5,
     "createChecksum": true,
     "logLevel": "Info"
@@ -28,6 +29,6 @@
   "notifications": {
     "onSuccess": false,
     "onError": true,
-    "email": ""
+    "email": "admin@example.com"
   }
 }

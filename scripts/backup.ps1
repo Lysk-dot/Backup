@@ -118,8 +118,17 @@ foreach ($repo in $config.repositories) {
     Write-Log "Criando backup: $backupFileName" -Level Info
     
     try {
-        # Comprimir arquivos
-        Compress-Archive -Path "$($repo.source)\*" -DestinationPath $backupFilePath -CompressionLevel Optimal -Force
+        # Comprimir arquivos usando a configuração de compressão
+        $compressionLevel = 'Optimal'
+        if ($config.settings.compression) {
+            switch ($config.settings.compression.ToString()) {
+                'Optimal' { $compressionLevel = 'Optimal' }
+                'Fastest' { $compressionLevel = 'Fastest' }
+                'NoCompression' { $compressionLevel = 'NoCompression' }
+                default { $compressionLevel = 'Optimal' }
+            }
+        }
+        Compress-Archive -Path "$($repo.source)\*" -DestinationPath $backupFilePath -CompressionLevel $compressionLevel -Force
         
         # Verificar se foi criado
         if (Test-Path $backupFilePath) {

@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.org/schemas/config.schema.json",
+  "title": "Backup Config",
+  "type": "object",
+  "required": ["repositories", "settings"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string", "description": "Editor schema hint (VS Code)" },
+    "repositories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "source"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique repository identifier (used as folder name under D:\\repos)"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "description": "UNC path or local path to backup (e.g., \\\\server\\share or D:\\data)"
+          },
+          "description": { "type": "string" },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      }
+    },
+  "settings": {
+      "type": "object",
+      "required": ["compression", "keepBackups", "createChecksum", "logLevel"],
+      "additionalProperties": false,
+      "properties": {
+        "compression": {
+          "type": "string",
+          "enum": ["Optimal", "Fastest", "NoCompression"],
+          "default": "Optimal"
+        },
+        "keepBackups": { "type": "integer", "minimum": 1, "default": 5 },
+        "createChecksum": { "type": "boolean", "default": true },
+        "logLevel": {
+          "type": "string",
+          "enum": ["Info", "Debug", "Error"],
+          "default": "Info"
+        }
+      }
+    }
+    ,
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "onSuccess": { "type": "boolean", "default": false },
+        "onError": { "type": "boolean", "default": true },
+        "email": { "type": "string", "format": "email" },
+        "teamsWebhook": { "type": "string" },
+        "slackWebhook": { "type": "string" }
+      }
+    }
+  }
+}
