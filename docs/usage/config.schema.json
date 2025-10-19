@@ -33,7 +33,7 @@
   "settings": {
       "type": "object",
       "required": ["compression", "keepBackups", "createChecksum", "logLevel"],
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "compression": {
           "type": "string",
@@ -46,6 +46,15 @@
           "type": "string",
           "enum": ["Info", "Debug", "Error"],
           "default": "Info"
+        },
+        "apiUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL do endpoint FastAPI para envio automático de backups (ex: http://192.168.1.100:9101/upload)"
+        },
+        "apiToken": {
+          "type": "string",
+          "description": "Token de autenticação Bearer para a API remota de backup"
         }
       }
     }

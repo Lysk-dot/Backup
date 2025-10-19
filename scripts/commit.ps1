@@ -1,16 +1,44 @@
+
 # ========================================
-# Script de Commit Automatizado
-# ========================================
-# Autor: Felipe Petracco Carmo
-# Email: kuramopr@gmail.com
-# Data: 19/10/2025
-# 
+# Script de Commit Automatizado | Automated Commit Script
+# Autor/Author: Felipe Petracco Carmo <kuramopr@gmail.com>
+# Data/Date: 19/10/2025
+#
 # Copyright (c) 2025 Felipe Petracco Carmo
-# Todos os direitos reservados.
-# 
-# Este software é fornecido "como esta", sem garantias
-# de qualquer tipo, expressas ou implicitas.
+# Todos os direitos reservados. | All rights reserved.
+#
+# Este software é fornecido "como está", sem garantias
+# de qualquer tipo, expressas ou implícitas.
+# This software is provided "as is", without warranty of any kind,
+# express or implied.
 # ========================================
+
+<#
+========================================
+    Script de Commit Automatizado (pt-BR)
+----------------------------------------
+Uso:
+    .\commit.ps1                # Modo interativo
+    .\commit.ps1 -Type feat     # Tipo específico
+    .\commit.ps1 -Type fix -Message "Corrige bug" -Push
+    .\commit.ps1 -Auto -Push    # Totalmente automático
+
+Este script sugere mensagens, padroniza commits (Conventional Commits) e pode fazer push automático.
+Veja exemplos e dicas em docs/pt-BR/README.md e docs/pt-BR/COMMIT_GUIDELINES.md
+
+========================================
+    Automated Commit Script (en-US)
+----------------------------------------
+Usage:
+    .\commit.ps1                # Interactive mode
+    .\commit.ps1 -Type feat     # Specific type
+    .\commit.ps1 -Type fix -Message "Fix bug" -Push
+    .\commit.ps1 -Auto -Push    # Fully automatic
+
+This script suggests messages, standardizes commits (Conventional Commits), and can auto-push.
+See examples and tips in docs/en-US/README.md and docs/en-US/COMMIT_GUIDELINES.md
+========================================
+#>
 
 param(
     [Parameter(Mandatory=$false)]

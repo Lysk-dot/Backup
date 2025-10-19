@@ -1,15 +1,16 @@
+
 # ========================================
-# Script de Backup Automatizado
-# ========================================
-# Autor: Felipe Petracco Carmo
-# Email: kuramopr@gmail.com
-# Data: 19/10/2025
-# 
+# Script de Backup Automatizado | Automated Backup Script
+# Autor/Author: Felipe Petracco Carmo <kuramopr@gmail.com>
+# Data/Date: 19/10/2025
+#
 # Copyright (c) 2025 Felipe Petracco Carmo
-# Todos os direitos reservados.
-# 
+# Todos os direitos reservados. | All rights reserved.
+#
 # Este software é fornecido "como está", sem garantias
 # de qualquer tipo, expressas ou implícitas.
+# This software is provided "as is", without warranty of any kind,
+# express or implied.
 # ========================================
 
 param(
@@ -145,6 +146,30 @@ foreach ($repo in $config.repositories) {
             }
             
             $successCount++
+
+            # Enviar backup para servidor remoto (FastAPI)
+            $apiUrl = $config.settings.apiUrl
+            $apiToken = $config.settings.apiToken
+            if ($apiUrl -and $apiToken) {
+                $uploadScript = Join-Path $scriptPath 'upload-backup.ps1'
+                if (Test-Path $uploadScript) {
+                    Write-Log "Enviando backup para servidor remoto..." -Level Info
+                    $uploadParams = @{
+                        FilePath = $backupFilePath
+                        ApiUrl = $apiUrl
+                        Token = $apiToken
+                        Repository = $repo.name
+                    }
+                    $uploadResult = & $uploadScript @uploadParams
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-Log "Upload realizado com sucesso." -Level Success
+                    } else {
+                        Write-Log "Falha ao enviar backup remoto." -Level Error
+                    }
+                } else {
+                    Write-Log "Script de upload não encontrado: $uploadScript" -Level Warning
+                }
+            }
         } else {
             Write-Log "Erro: Arquivo de backup não foi criado" -Level Error
             $errorCount++

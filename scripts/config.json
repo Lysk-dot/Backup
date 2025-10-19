@@ -24,7 +24,9 @@
     "compression": "Optimal",
     "keepBackups": 5,
     "createChecksum": true,
-    "logLevel": "Info"
+    "logLevel": "Info",
+    "apiUrl": "http://192.168.1.100:9101/upload",
+    "apiToken": "mt5-backup-secure-token-2025"
   },
   "notifications": {
     "onSuccess": false,

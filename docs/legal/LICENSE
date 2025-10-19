@@ -1,5 +1,3 @@
-# LICENSE
-
 Copyright (c) 2025 Felipe Petracco Carmo
 
 Todos os direitos reservados.
@@ -7,16 +5,15 @@ Todos os direitos reservados.
 Este software e os arquivos associados (o "Software") são de propriedade exclusiva
 de Felipe Petracco Carmo (kuramopr@gmail.com).
 
+e em ambientes de backup privados.
+
 ## Permissões
 
-É permitido ao titular da licença usar, copiar e modificar o Software para uso pessoal
-e em ambientes de backup privados.
+É permitido ao titular da licença usar, copiar e modificar o Software apenas para uso pessoal ou de estudo.
+Não é permitido o uso para fins comerciais.
 
 ## Restrições
 
-- Não é permitida a distribuição comercial do Software sem autorização prévia por escrito.
-- Não é permitido sub-licenciar ou vender cópias do Software.
-- O Software não pode ser usado para fins comerciais sem autorização expressa.
 
 ## Isenção de Garantia
 
@@ -36,3 +33,8 @@ Para solicitações de licenciamento comercial ou outras questões, entre em con
 **Felipe Petracco Carmo**  
 Email: kuramopr@gmail.com  
 GitHub: @Lysk-dot
+
+# Compatibilidade / Compatibility
+
+Este projeto é planejado e suportado apenas para Windows. Não há garantia de funcionamento ou suporte em outros sistemas operacionais.
+This project is designed and supported only for Windows. No guarantee of operation or support on other operating systems.

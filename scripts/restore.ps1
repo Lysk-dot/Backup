@@ -1,15 +1,16 @@
+
 # ========================================
-# Script de Restauração de Backup
-# ========================================
-# Autor: Felipe Petracco Carmo
-# Email: kuramopr@gmail.com
-# Data: 19/10/2025
-# 
+# Script de Restauração de Backup | Backup Restore Script
+# Autor/Author: Felipe Petracco Carmo <kuramopr@gmail.com>
+# Data/Date: 19/10/2025
+#
 # Copyright (c) 2025 Felipe Petracco Carmo
-# Todos os direitos reservados.
-# 
+# Todos os direitos reservados. | All rights reserved.
+#
 # Este software é fornecido "como está", sem garantias
 # de qualquer tipo, expressas ou implícitas.
+# This software is provided "as is", without warranty of any kind,
+# express or implied.
 # ========================================
 
 param(
