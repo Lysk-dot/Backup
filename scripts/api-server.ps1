@@ -41,6 +41,7 @@ $rootPath = Split-Path -Parent $scriptPath
 $configFile = Join-Path $scriptPath "config.json"
 $logsPath = Join-Path $rootPath "logs"
 $reposPath = Join-Path $rootPath "repos"
+$statusJson = Join-Path $rootPath "status\health-status.json"
 
 # Criar diretórios necessários
 if (-not (Test-Path $logsPath)) { New-Item -ItemType Directory -Path $logsPath -Force | Out-Null }
@@ -252,6 +253,7 @@ try {
     Write-Host "  POST /api/repositories        - Adicionar repositorio" -ForegroundColor White
     Write-Host "  GET  /api/repositories/validate            - Validar todos repos" -ForegroundColor White
     Write-Host "  GET  /api/repositories/validate/{repo}     - Validar um repo" -ForegroundColor White
+    Write-Host "  GET  /api/health              - Status de saúde do disco" -ForegroundColor White
     Write-Host "  GET  /api/backups             - Listar todos backups" -ForegroundColor White
     Write-Host "  GET  /api/backups/{repo}      - Listar backups de um repo" -ForegroundColor White
     Write-Host "  POST /api/backup/{repo}       - Criar backup" -ForegroundColor White
@@ -292,6 +294,22 @@ try {
                 $config.repositories += $body
                 Save-Config $config
                 $responseData = @{ success = $true; message = "Repository added" } | ConvertTo-Json
+            }
+            elseif ($url -eq "/api/health" -and $method -eq "GET") {
+                if (Test-Path $statusJson) {
+                    $responseData = Get-Content $statusJson -Raw
+                } else {
+                    # Executa uma checagem rápida on-demand se não existir
+                    try {
+                        & "$scriptPath\..\scripts\health-check.ps1" -Quiet | Out-Null
+                    } catch {}
+                    if (Test-Path $statusJson) {
+                        $responseData = Get-Content $statusJson -Raw
+                    } else {
+                        $statusCode = 503
+                        $responseData = @{ error = "Health status not available" } | ConvertTo-Json
+                    }
+                }
             }
             elseif ($url -eq "/api/repositories/validate" -and $method -eq "GET") {
                 $config = Get-Config

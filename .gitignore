@@ -83,10 +83,13 @@ repos/**/*.sha256
 
 # Logs (não versionar logs)
 logs/*.log
+status/*.json
+status/*.log
 
 # Manter estrutura de pastas
 !repos/.gitkeep
 !logs/.gitkeep
+!status/.gitkeep
 
 # Arquivos de restauração temporários
 restore_*/
