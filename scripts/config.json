@@ -11,6 +11,12 @@
       "source": "\\\\servidor\\compartilhamento\\repo2",
       "description": "Segundo repositório",
       "enabled": true
+    },
+    {
+      "name": "repo3",
+      "source": "\\\\servidor\\compartilhamento\\repo3",
+      "description": "Terceiro repositório",
+      "enabled": true
     }
   ],
   "settings": {

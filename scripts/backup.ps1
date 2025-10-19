@@ -1,7 +1,15 @@
 # ========================================
 # Script de Backup Automatizado
-# Autor: Lysk-dot
+# ========================================
+# Autor: Felipe Petracco Carmo
+# Email: kuramopr@gmail.com
 # Data: 19/10/2025
+# 
+# Copyright (c) 2025 Felipe Petracco Carmo
+# Todos os direitos reservados.
+# 
+# Este software é fornecido "como está", sem garantias
+# de qualquer tipo, expressas ou implícitas.
 # ========================================
 
 param(

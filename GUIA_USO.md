@@ -14,6 +14,18 @@ Edite `scripts/config.json` e configure os caminhos dos seus repositórios:
       "source": "\\\\192.168.1.100\\projeto1",
       "description": "Projeto principal",
       "enabled": true
+    },
+    {
+      "name": "repo2",
+      "source": "\\\\192.168.1.100\\projeto2",
+      "description": "Segundo projeto",
+      "enabled": true
+    },
+    {
+      "name": "repo3",
+      "source": "\\\\192.168.1.100\\projeto3",
+      "description": "Terceiro projeto",
+      "enabled": true
     }
   ]
 }
