@@ -23,7 +23,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $rootPath = Split-Path -Parent $scriptPath
 $configFile = Join-Path $scriptPath "config.json"
 $logsPath = Join-Path $rootPath "logs"
-$reposPath = Join-Path $rootPath "repos"
+$reposPath = "D:\backups\repositorio1"
 
 # Data e hora atual
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -129,7 +129,21 @@ foreach ($repo in $config.repositories) {
                 default { $compressionLevel = 'Optimal' }
             }
         }
-        Compress-Archive -Path "$($repo.source)\*" -DestinationPath $backupFilePath -CompressionLevel $compressionLevel -Force
+        
+        # Obter todos os itens excluindo pastas que causam recursão
+        $itemsToBackup = Get-ChildItem -Path $repo.source -Force | Where-Object {
+            $_.Name -notin @('backups', 'System Volume Information', '$RECYCLE.BIN')
+        }
+        
+        if ($itemsToBackup.Count -eq 0) {
+            Write-Log "Nenhum item para backup encontrado" -Level Warning
+            $errorCount++
+            continue
+        }
+        
+        # Comprimir apenas os itens filtrados
+        $itemPaths = $itemsToBackup | ForEach-Object { $_.FullName }
+        Compress-Archive -Path $itemPaths -DestinationPath $backupFilePath -CompressionLevel $compressionLevel -Force
         
         # Verificar se foi criado
         if (Test-Path $backupFilePath) {

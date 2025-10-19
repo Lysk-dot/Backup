@@ -2,22 +2,22 @@
   "$schema": "../docs/usage/config.schema.json",
   "repositories": [
     {
-      "name": "repo1",
-      "source": "\\\\servidor\\compartilhamento\\repo1",
-      "description": "Primeiro repositório",
+      "name": "mt5-trading-db",
+      "source": "D:\\",
+      "description": "MT5 Trading Database Repository",
       "enabled": true
     },
     {
       "name": "repo2",
       "source": "\\\\servidor\\compartilhamento\\repo2",
       "description": "Segundo repositório",
-      "enabled": true
+      "enabled": false
     },
     {
       "name": "repo3",
       "source": "\\\\servidor\\compartilhamento\\repo3",
       "description": "Terceiro repositório",
-      "enabled": true
+      "enabled": false
     }
   ],
   "settings": {
@@ -25,7 +25,7 @@
     "keepBackups": 5,
     "createChecksum": true,
     "logLevel": "Info",
-    "apiUrl": "http://192.168.1.100:9101/upload",
+    "apiUrl": "http://192.168.15.20:9101/upload",
     "apiToken": "mt5-backup-secure-token-2025"
   },
   "notifications": {

@@ -21,11 +21,42 @@ if (-not (Test-Path $FilePath)) {
 }
 
 try {
-    $Headers = @{ Authorization = "Bearer $Token" }
-    $Form = @{ file = Get-Item $FilePath; repository = $Repository }
-    $Response = Invoke-RestMethod -Uri $ApiUrl -Method Post -Headers $Headers -Form $Form -TimeoutSec 300
-    Write-Host "Upload realizado com sucesso: $($Response.message)" -ForegroundColor Green
-    exit 0
+    # PowerShell 5.1 compatível - usando multipart/form-data manualmente
+    Add-Type -AssemblyName System.Net.Http
+    
+    $httpClient = New-Object System.Net.Http.HttpClient
+    $httpClient.Timeout = New-TimeSpan -Seconds 300
+    
+    $content = New-Object System.Net.Http.MultipartFormDataContent
+    
+    # Adicionar arquivo
+    $fileStream = [System.IO.File]::OpenRead($FilePath)
+    $fileContent = New-Object System.Net.Http.StreamContent($fileStream)
+    $fileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse("application/octet-stream")
+    $content.Add($fileContent, "file", [System.IO.Path]::GetFileName($FilePath))
+    
+    # Adicionar headers
+    $httpClient.DefaultRequestHeaders.Authorization = New-Object System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", $Token)
+    $httpClient.DefaultRequestHeaders.Add("X-Repository-Name", $Repository)
+    
+    # Enviar request
+    Write-Host "Enviando backup para $ApiUrl..." -ForegroundColor Cyan
+    $response = $httpClient.PostAsync($ApiUrl, $content).Result
+    
+    if ($response.IsSuccessStatusCode) {
+        $responseBody = $response.Content.ReadAsStringAsync().Result
+        Write-Host "Upload realizado com sucesso!" -ForegroundColor Green
+        Write-Host $responseBody -ForegroundColor Gray
+        $fileStream.Close()
+        $httpClient.Dispose()
+        exit 0
+    } else {
+        $errorBody = $response.Content.ReadAsStringAsync().Result
+        Write-Host "Erro HTTP $($response.StatusCode): $errorBody" -ForegroundColor Red
+        $fileStream.Close()
+        $httpClient.Dispose()
+        exit 2
+    }
 } catch {
     Write-Host "Erro ao enviar backup: $_" -ForegroundColor Red
     exit 2
