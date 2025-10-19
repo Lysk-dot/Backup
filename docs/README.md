@@ -4,6 +4,8 @@ Este diretório reúne toda a documentação do projeto de Backup.
 
 ## Índice
 
+- Entrada de dados (cadastrar repositórios): [docs/usage/ENTRADA_DADOS.md](../docs/usage/ENTRADA_DADOS.md)
+- Template de repositórios: [docs/usage/repos-template.json](../docs/usage/repos-template.json)
 - Visão geral da API: [docs/api/README.md](../docs/api/README.md)
 - Guia de uso (execução e restauração): [docs/usage/GUIA_USO.md](../docs/usage/GUIA_USO.md)
 - Configuração inicial do Git: [docs/setup/SETUP_GIT.md](../docs/setup/SETUP_GIT.md)
@@ -23,5 +25,7 @@ docs/
 ├── setup/
 │   └── SETUP_GIT.md
 └── usage/
-    └── GUIA_USO.md
+    ├── ENTRADA_DADOS.md
+    ├── GUIA_USO.md
+    └── repos-template.json
 ```

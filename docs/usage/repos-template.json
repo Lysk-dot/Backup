@@ -1,0 +1,28 @@
+{
+  "repositories": [
+    {
+      "name": "projeto-web",
+      "source": "\\\\192.168.1.10\\projetos\\web",
+      "description": "Aplicação web principal",
+      "enabled": true
+    },
+    {
+      "name": "relatorios",
+      "source": "\\\\fileserver\\departamento\\relatorios",
+      "description": "Planilhas e relatórios",
+      "enabled": true
+    },
+    {
+      "name": "bd-dumps",
+      "source": "\\\\dbserver\\exports\\dumps",
+      "description": "Dumps do banco de dados",
+      "enabled": true
+    }
+  ],
+  "settings": {
+    "compression": "zip",
+    "keepBackups": 5,
+    "createChecksum": true,
+    "logLevel": "Info"
+  }
+}
