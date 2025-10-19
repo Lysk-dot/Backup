@@ -1,0 +1,27 @@
+{
+  "repositories": [
+    {
+      "name": "repo1",
+      "source": "\\\\servidor\\compartilhamento\\repo1",
+      "description": "Primeiro repositório",
+      "enabled": true
+    },
+    {
+      "name": "repo2",
+      "source": "\\\\servidor\\compartilhamento\\repo2",
+      "description": "Segundo repositório",
+      "enabled": true
+    }
+  ],
+  "settings": {
+    "compression": "zip",
+    "keepBackups": 5,
+    "createChecksum": true,
+    "logLevel": "Info"
+  },
+  "notifications": {
+    "onSuccess": false,
+    "onError": true,
+    "email": ""
+  }
+}

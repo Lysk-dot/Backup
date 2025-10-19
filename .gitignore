@@ -76,3 +76,17 @@ bld/
 # Personal files
 *.bak
 *.old
+
+# Backups comprimidos (não versionar os arquivos de backup)
+repos/**/*.zip
+repos/**/*.sha256
+
+# Logs (não versionar logs)
+logs/*.log
+
+# Manter estrutura de pastas
+!repos/.gitkeep
+!logs/.gitkeep
+
+# Arquivos de restauração temporários
+restore_*/
