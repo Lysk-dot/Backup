@@ -150,6 +150,53 @@ curl -X POST http://localhost:8080/api/repositories \
 
 ---
 
+## 5.1) Topologia: 2 repositórios em outro servidor e 1 em VM
+
+Quando as fontes estão distribuídas entre servidores e VMs, atenção a:
+
+- Credenciais diferentes por host (use `cmdkey` para cada host: `fileserver`, `dbserver`, `vmapp01`)
+- Firewall permitindo SMB (porta 445/TCP) entre as máquinas
+- Resolução de nomes (DNS); se falhar, use IP no caminho UNC (\\192.168.x.x\share)
+- Permissões NTFS/Compartilhamento consistentes para a conta que executa o backup
+
+Exemplo de `config.json` com hosts distintos:
+
+```json
+{
+  "repositories": [
+    { "name": "repo-server1-a", "source": "\\\\fileserver\\projA", "description": "Repo A no servidor 1", "enabled": true },
+    { "name": "repo-server1-b", "source": "\\\\fileserver\\projB", "description": "Repo B no servidor 1", "enabled": true },
+    { "name": "repo-vm",        "source": "\\\\vmapp01\\projVM",  "description": "Repo na VM dentro do servidor", "enabled": true }
+  ]
+}
+```
+
+Validação rápida por host:
+
+```powershell
+# Ping e porta SMB
+Test-Connection fileserver -Count 1
+Test-NetConnection fileserver -Port 445
+Test-NetConnection vmapp01 -Port 445
+
+# Credenciais dedicadas (se necessário)
+cmdkey /add:fileserver /user:DOMINIO\backup_user /pass:senha
+cmdkey /add:vmapp01 /user:DOMINIO\backup_user /pass:senha
+```
+
+Validação com script (recomendado):
+
+```powershell
+# Validar todos os repositórios do config.json
+cd D:\scripts
+./validate-sources.ps1
+
+# Validar apenas o repo da VM
+./validate-sources.ps1 -RepoName repo-vm
+```
+
+---
+
 ## 6) Exemplos rápidos
 
 Cadastrar 3 repositórios editando o arquivo:

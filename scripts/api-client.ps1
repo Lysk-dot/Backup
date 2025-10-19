@@ -23,7 +23,7 @@
 
 param(
     [Parameter(Mandatory=$true, Position=0)]
-    [ValidateSet('status', 'backup', 'list', 'repos', 'add')]
+    [ValidateSet('status', 'backup', 'list', 'repos', 'add', 'validate')]
     [string]$Command,
     
     [Parameter(Mandatory=$false, Position=1)]
@@ -193,6 +193,28 @@ switch ($Command) {
             Write-Host "✗ Erro ao adicionar repositorio" -ForegroundColor Red
         }
         Write-Host ""
+    }
+    
+    'validate' {
+        if ($Target) {
+            Write-Host "Validando repositório: $Target" -ForegroundColor Yellow
+            try {
+                $result = Invoke-ApiRequest -Method GET -Endpoint "/api/repositories/validate/$Target"
+                Write-Host ""; Write-Host "Resultado:" -ForegroundColor Green
+                $result | ConvertTo-Json -Depth 10
+            } catch {
+                Write-Host "Falha ao validar $Target via API. Tente o script local: .\\validate-sources.ps1 -RepoName $Target" -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Validando todos os repositórios..." -ForegroundColor Yellow
+            try {
+                $result = Invoke-ApiRequest -Method GET -Endpoint "/api/repositories/validate"
+                Write-Host ""; Write-Host "Resultados:" -ForegroundColor Green
+                $result | ConvertTo-Json -Depth 10
+            } catch {
+                Write-Host "Falha ao validar via API. Tente o script local: .\\validate-sources.ps1" -ForegroundColor Red
+            }
+        }
     }
 }
 

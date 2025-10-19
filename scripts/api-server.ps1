@@ -70,6 +70,32 @@ function Save-Config {
     $Config | ConvertTo-Json -Depth 10 | Set-Content $configFile -Encoding UTF8
 }
 
+# Validação de repositórios (conectividade e acesso)
+function Validate-Repository {
+    param([object]$Repo)
+    
+    # Extrair host do caminho UNC
+    $host = $null
+    if ($Repo.source -match "^\\\\([^\\]+)\\") { $host = $matches[1] }
+    
+    $ping = $null; $smb = $null; $pathExists = $false; $sample = @(); $error = $null
+    try { $ping = Test-Connection -ComputerName $host -Count 1 -Quiet -ErrorAction SilentlyContinue } catch {}
+    try { $smb = Test-NetConnection -ComputerName $host -Port 445 -InformationLevel Quiet } catch {}
+    try { $pathExists = Test-Path $Repo.source } catch {}
+    if ($pathExists) {
+        try { $sample = (Get-ChildItem $Repo.source -Force | Select-Object -First 5 | ForEach-Object { $_.Name }) } catch { $error = $_.Exception.Message }
+    }
+    return @{
+        name = $Repo.name
+        host = $host
+        ping = $ping
+        smb445 = $smb
+        pathExists = $pathExists
+        sample = $sample
+        error = $error
+    }
+}
+
 # Função para executar backup
 function Invoke-Backup {
     param([string]$RepoName)
@@ -224,6 +250,8 @@ try {
     Write-Host "  GET  /api/status              - Status do sistema" -ForegroundColor White
     Write-Host "  GET  /api/repositories        - Listar repositorios" -ForegroundColor White
     Write-Host "  POST /api/repositories        - Adicionar repositorio" -ForegroundColor White
+    Write-Host "  GET  /api/repositories/validate            - Validar todos repos" -ForegroundColor White
+    Write-Host "  GET  /api/repositories/validate/{repo}     - Validar um repo" -ForegroundColor White
     Write-Host "  GET  /api/backups             - Listar todos backups" -ForegroundColor White
     Write-Host "  GET  /api/backups/{repo}      - Listar backups de um repo" -ForegroundColor White
     Write-Host "  POST /api/backup/{repo}       - Criar backup" -ForegroundColor White
@@ -264,6 +292,24 @@ try {
                 $config.repositories += $body
                 Save-Config $config
                 $responseData = @{ success = $true; message = "Repository added" } | ConvertTo-Json
+            }
+            elseif ($url -eq "/api/repositories/validate" -and $method -eq "GET") {
+                $config = Get-Config
+                $results = @()
+                foreach ($repo in $config.repositories) { $results += (Validate-Repository -Repo $repo) }
+                $responseData = @{ results = $results } | ConvertTo-Json -Depth 10
+            }
+            elseif ($url -match "^/api/repositories/validate/(.+)$" -and $method -eq "GET") {
+                $repoName = $matches[1]
+                $config = Get-Config
+                $repo = $config.repositories | Where-Object { $_.name -eq $repoName }
+                if (-not $repo) {
+                    $statusCode = 404
+                    $responseData = @{ error = "Repository not found" } | ConvertTo-Json
+                } else {
+                    $result = Validate-Repository -Repo $repo
+                    $responseData = $result | ConvertTo-Json -Depth 10
+                }
             }
             elseif ($url -eq "/api/backups" -and $method -eq "GET") {
                 $backups = Get-Backups
